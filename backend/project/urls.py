@@ -15,7 +15,37 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
+from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
+import main_app.views as views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # # Получить все заявки выбранного пользователя
+    # path('api/get_messages', views.GetMessagesView.as_view()),
+    #
+    # # Создать новую заявку
+    # path('api/new_message', views.TestView.as_view()),
+    #
+    # # Тест net
+    # path('api/test', views.TestView.as_view()),
+    #
+    # # Получить выбранную заявку
+    # path('api/message/<int:message_pk>', views.ShowCurrentMessageView.as_view()),
 ]
+
+# Авторизация
+urlpatterns += [
+    url(r'^auth/', include('djoser.urls')),
+    url(r'^auth/', include('djoser.urls.jwt')),
+
+    # # Проверить, авторизирован ли пользователь
+    # path('api/is_authenticated', views.IsAuthenticatedView.as_view()),
+]
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

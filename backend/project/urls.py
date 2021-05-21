@@ -30,6 +30,9 @@ urlpatterns = [
 urlpatterns += [
     # Predicts the most relevant subsidies
     path('api/predict', views.PredictView.as_view()),
+
+    # Returns two selected subsidies
+    path('api/compare', views.CompareView.as_view()),
 ]
 
 # Auth

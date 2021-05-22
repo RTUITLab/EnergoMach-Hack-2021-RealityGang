@@ -252,16 +252,19 @@ class PredictView(APIView):
 
     def post(self, request):
         temp_data = {
-            "okved": request.data['okved'],
-            "osn_tass": request.data['osn_tass'],
-            "dop_tass": request.data['dop_tass'],
-            "attrs": request.data['attrs'],
-            "otr": request.data['otr'],
-            "region": request.data['region'],
-            "forma": request.data['forma'],
-            "kbk": request.data['kbk'],
-            "inn": request.data['inn'],
-            "ogrn": request.data['ogrn'],
+            'status': 200,
+            'data': {
+                "okved": request.data['okved'],
+                "osn_tass": request.data['osn_tass'],
+                "dop_tass": request.data['dop_tass'],
+                "attrs": request.data['attrs'],
+                "otr": request.data['otr'],
+                "region": request.data['region'],
+                "forma": request.data['forma'],
+                "kbk": request.data['kbk'],
+                "inn": request.data['inn'],
+                "ogrn": request.data['ogrn'],
+            }
         }
 
         # req_data = {

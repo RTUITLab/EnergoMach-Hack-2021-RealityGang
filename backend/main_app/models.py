@@ -4,15 +4,17 @@ from datetime import datetime
 
 
 class Subsidy(models.Model):
-    name = models.CharField('Name', max_length=250, default='none')
-    description = models.TextField('Description', max_length=1500, default='none')
+    kbk = models.CharField('KBK', max_length=250, default='none')
+    purpose = models.CharField('Purpose', max_length=250, default='none')
+    info = models.JSONField('info', null=True, blank=True)
+    # description = models.TextField('Description', max_length=1500, default='none')
 
     class Meta:
         verbose_name = 'Subsidy'
         verbose_name_plural = 'Subsidies'
 
     def __str__(self):
-        return f'({self.id}) {self.name}'
+        return f'({self.kbk}) {self.purpose}'
 
 
 class User(AbstractUser):

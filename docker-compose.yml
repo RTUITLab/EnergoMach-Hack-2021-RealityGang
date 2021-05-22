@@ -1,0 +1,51 @@
+version: '3.7'
+
+services:
+#  ml:
+#    build:
+#      context: ./ml
+#    command: sh -c "uvicorn main:app --host 0.0.0.0 --port 8000"
+#    expose:
+#      - 8000
+  backend:
+    build:
+      context: ./backend
+    command: sh -c "python3 manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8080 --timeout 10000 project.wsgi"
+    expose:
+      - 8080
+    volumes:
+      - ./backend:/usr/src/em
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=DJANGO_SECRET_KEY
+#  db:
+#    image: postgres:12.0-alpine
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+#    environment:
+#      - POSTGRES_USER=artway_user
+#      - POSTGRES_PASSWORD=P98KVAWdkmrgi324
+#      - POSTGRES_DB=artway_db
+#  frontend:
+#    build:
+#      context: ./frontend
+#    command: npm run-script build
+#    volumes:
+#      - frontend_build_folder:/frontend/build
+#    environment:
+#      - REACT_APP_PRODUCTION_URL=http://127.0.0.1/
+  nginx:
+    build:
+      context: ./nginx
+    ports:
+      - 80:8080
+    volumes:
+#      - frontend_build_folder:/var/www/frontend
+      - ./backend:/usr/src/em
+    depends_on:
+#      - ml
+      - backend
+#      - frontend
+#volumes:
+#  frontend_build_folder:
+#  postgres_data:

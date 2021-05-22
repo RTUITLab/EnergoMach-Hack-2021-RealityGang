@@ -251,21 +251,23 @@ class PredictView(APIView):
         return data
 
     def post(self, request):
-        temp_data = {
-            'status': 200,
-            'data': {
-                "okved": request.data['okved'],
-                "osn_tass": request.data['osn_tass'],
-                "dop_tass": request.data['dop_tass'],
-                "attrs": request.data['attrs'],
-                "otr": request.data['otr'],
-                "region": request.data['region'],
-                "forma": request.data['forma'],
-                "kbk": request.data['kbk'],
-                "inn": request.data['inn'],
-                "ogrn": request.data['ogrn'],
-            }
-        }
+        # temp_data = {
+        #     'status': 200,
+        #     'data': {
+        #         "okved": request.data['okved'],
+        #         "osn_tass": request.data['osn_tass'],
+        #         "dop_tass": request.data['dop_tass'],
+        #         "attrs": request.data['attrs'],
+        #         "otr": request.data['otr'],
+        #         "region": request.data['region'],
+        #         "forma": request.data['forma'],
+        #         # "kbk": request.data['kbk'],
+        #         "inn": request.data['inn'],
+        #         "ogrn": request.data['ogrn'],
+        #     }
+        # }
+
+        temp_data = request.data['temp_data']
 
         # req_data = {
         #     "status": 200,
@@ -309,8 +311,8 @@ class PredictView(APIView):
         #     }
         # }
 
-        data = requests.post('http://ml:5000/predict', timeout=10000, json=temp_data).json()
-        # data = requests.post('http://localhost:5000/predict', timeout=10000, json=temp_data).json()
+        # data = requests.post('http://ml:5000/predict', timeout=10000, json=temp_data).json()
+        data = requests.post('http://localhost:5000/predict', timeout=10000, json=temp_data).json()
 
         data = [(key, value) for key, value in data['probs'].items()]
         data.sort(key=lambda val: val[1], reverse=True)

@@ -165,6 +165,13 @@ class FillDBView(APIView):
 
     def fuzz_me(self, purpose):
         dfs = pd.read_excel(r'main_app/data_main.xlsx')
+        # dfs = dfs.astype({
+        #     '\"ID\"': 'str',
+        #     '\"GUARANTEE_COST\"': 'str',
+        #     '\"DATE_NPA\"': 'str',
+        #     '\"IS_NOT_ACTIVE\"': 'str',
+        #     '\"IS_SOFINANCE\"': 'str',
+        # })
         max = 0
         max_i = 0
         temp_i = 0
@@ -176,13 +183,51 @@ class FillDBView(APIView):
             # print(max, '\t', max_i, '\t', temp, '\t', str(value)[0:20])
             temp_i += 1
 
-        df = dfs.iloc[max_i].to_dict()
-        print(df)
-        # data = {
-        #     'id': df[0]
-        # }
+        # df = dfs.iloc[max_i].to_dict()
+        # print(dfs.dtypes)
+        # print(df)
 
-        return max_i
+        data = {
+            'ID': str(dfs['\"ID\"'][max_i]),
+            'URL': str(dfs['\"URL\"'][max_i]),
+            'SMALL_NAME': str(dfs['\"SMALL_NAME\"'][max_i]),
+            'FULL_NAME': str(dfs['\"FULL_NAME\"'][max_i]),
+            'NUMBER_NPA': str(dfs['\"NUMBER_NPA\"'][max_i]),
+            'DATE_NPA': str(dfs['\"DATE_NPA\"'][max_i]),
+            'DESCRIPTION': str(dfs['\"DESCRIPTION\"'][max_i]),
+            'PURPOSE': str(dfs['\"PURPOSE\"'][max_i]),
+            'OBJECTIVE': str(dfs['\"OBJECTIVE\"'][max_i]),
+            'TYPE_MERA': str(dfs['\"TYPE_MERA\"'][max_i]),
+            'TYPE_FORMAT_SUPPORT': str(dfs['\"TYPE_FORMAT_SUPPORT\"'][max_i]),
+            'SROK_VOZVRATA': str(dfs['\"SROK_VOZVRATA\"'][max_i]),
+            'PROCENT_VOZVRATA': str(dfs['\"PROCENT_VOZVRATA\"'][max_i]),
+            'GUARANTE_PERIODE': str(dfs['\"GUARANTE_PERIODE\"'][max_i]),
+            'GUARANTEE_COST': str(dfs['\"GUARANTEE_COST\"'][max_i]),
+            'APPLIANCE_ID': str(dfs['\"APPLIANCE_ID\"'][max_i]),
+            'OKVED2': str(dfs['\"OKVED2\"'][max_i]),
+            'COMPLEXITY': str(dfs['\"COMPLEXITY\"'][max_i]),
+            'AMOUNT_OF_SUPPORT': str(dfs['\"AMOUNT_OF_SUPPORT\"'][max_i]),
+            'REGULARITY_SELECT': str(dfs['\"REGULARITY_SELECT\"'][max_i]),
+            'PERIOD': str(dfs['\"PERIOD\"'][max_i]),
+            'DOGOVOR': str(dfs['\"DOGOVOR\"'][max_i]),
+            'GOS_PROGRAM': str(dfs['\"GOS_PROGRAM\"'][max_i]),
+            'EVENT': str(dfs['\"EVENT\"'][max_i]),
+            'DOP_INFO': str(dfs['\"DOP_INFO\"'][max_i]),
+            'IS_NOT_ACTIVE': str(dfs['\"IS_NOT_ACTIVE\"'][max_i]),
+            'PRICHINA_NOT_ACT': str(dfs['\"PRICHINA_NOT_ACT\"'][max_i]),
+            'REQ_ZAYAVITEL': str(dfs['\"REQ_ZAYAVITEL\"'][max_i]),
+            'REQUEST_PROJECT': str(dfs['\"REQUEST_PROJECT\"'][max_i]),
+            'IS_SOFINANCE': str(dfs['\"IS_SOFINANCE\"'][max_i]),
+            'DOLYA_ISOFINANCE': str(dfs['\"DOLYA_ISOFINANCE\"'][max_i]),
+            'BUDGET_PROJECT': str(dfs['\"BUDGET_PROJECT\"'][max_i]),
+            'POKAZATEL_RESULT': str(dfs['\"POKAZATEL_RESULT\"'][max_i]),
+            'TERRITORIAL_LEVEL': str(dfs['\"TERRITORIAL_LEVEL\"'][max_i]),
+            'REGION_ID': str(dfs['\"REGION_ID\"'][max_i]),
+            'RESPONS_STRUCTURE': str(dfs['\"RESPONS_STRUCTURE\"'][max_i]),
+            'ORG_ID': str(dfs['\"ORG_ID\"'][max_i]),
+        }
+
+        return data
 
     def get(self, request):
         res = {
@@ -205,12 +250,16 @@ class FillDBView(APIView):
         with open('main_app/subsidy.json', 'r', encoding="utf8") as f:
             subsidies = json.load(f)
 
+        res_list = []
         for el in data:
             temp_kbk = el[0]
             temp_purpose = subsidies[temp_kbk]['purpose']
-            temp_str = self.fuzz_me(temp_purpose)
+            df = self.fuzz_me(temp_purpose)
+            res_list.append(df)
 
-        print(subsidies)
+        # for el in res_list
+
+        # res_json = json.dumps(res_list)
 
         # with open('main_app/subsidy_all_fields.json', 'r', encoding="utf8") as f:
         #     data = json.load(f)
@@ -220,4 +269,7 @@ class FillDBView(APIView):
         # dfs = pd.read_excel(r'main_app/data_main.xlsx')
         # print(dfs['\"SMALL_NAME\"'][1897])
 
-        return Response(data)
+        return Response({
+            'status': status.HTTP_200_OK,
+            'data': res_list
+        })

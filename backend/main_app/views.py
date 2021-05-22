@@ -99,12 +99,16 @@ class SaveView(APIView):
 
     def get(self, request):
         user = request.user
+        # print('ok')
+        # print(user.company)
         data = json.loads(user.company)
+        # print(type(data))
 
         return Response({
             'status': status.HTTP_200_OK,
             'data': data
         })
+        return Response(True)
 
     def post(self, request):
         user = request.user
@@ -129,33 +133,6 @@ class CompareView(APIView):
         #     }
         # })
         return Response(status.HTTP_200_OK)
-
-
-# class PredictView(APIView):
-#     """
-#     Predicts the most relevant subsidies
-#     """
-#
-#     def post(self, request):
-#         temp_data = {
-#             "okved": request.data['okved'],
-#             "osn_tass": request.data['osn_tass'],
-#             "dop_tass": request.data['dop_tass'],
-#             "attrs": request.data['attrs'],
-#             "otr": request.data['otr'],
-#             "region": request.data['region'],
-#             "forma": request.data['forma'],
-#             "kbk": request.data['kbk'],
-#             "inn": request.data['inn'],
-#             "ogrn": request.data['ogrn'],
-#         }
-#
-#         # response = requests.post('http://ml:8000/predict', timeout=10000,
-#         #                          json={"file": base64.b64encode(request.FILES['file'].read()).decode('UTF-8')}).json()
-#         # answers = response['answers']
-#         # answers = self.pretty_json(answers)
-#
-#         return Response(status.HTTP_200_OK)
 
 
 class PredictView(APIView):
@@ -296,7 +273,3 @@ class PredictView(APIView):
             'status': status.HTTP_200_OK,
             'data': res_list
         })
-
-    # def post(self, request):
-    #
-    #     return Response(data)

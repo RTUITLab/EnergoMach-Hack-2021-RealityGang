@@ -131,47 +131,40 @@ class CompareView(APIView):
         return Response(status.HTTP_200_OK)
 
 
+# class PredictView(APIView):
+#     """
+#     Predicts the most relevant subsidies
+#     """
+#
+#     def post(self, request):
+#         temp_data = {
+#             "okved": request.data['okved'],
+#             "osn_tass": request.data['osn_tass'],
+#             "dop_tass": request.data['dop_tass'],
+#             "attrs": request.data['attrs'],
+#             "otr": request.data['otr'],
+#             "region": request.data['region'],
+#             "forma": request.data['forma'],
+#             "kbk": request.data['kbk'],
+#             "inn": request.data['inn'],
+#             "ogrn": request.data['ogrn'],
+#         }
+#
+#         # response = requests.post('http://ml:8000/predict', timeout=10000,
+#         #                          json={"file": base64.b64encode(request.FILES['file'].read()).decode('UTF-8')}).json()
+#         # answers = response['answers']
+#         # answers = self.pretty_json(answers)
+#
+#         return Response(status.HTTP_200_OK)
+
+
 class PredictView(APIView):
     """
     Predicts the most relevant subsidies
     """
 
-    def post(self, request):
-        temp_data = {
-            "okved": request.data['okved'],
-            "osn_tass": request.data['osn_tass'],
-            "dop_tass": request.data['dop_tass'],
-            "attrs": request.data['attrs'],
-            "otr": request.data['otr'],
-            "region": request.data['region'],
-            "forma": request.data['forma'],
-            "kbk": request.data['kbk'],
-            "inn": request.data['inn'],
-            "ogrn": request.data['ogrn'],
-        }
-
-        # response = requests.post('http://ml:8000/predict', timeout=10000,
-        #                          json={"file": base64.b64encode(request.FILES['file'].read()).decode('UTF-8')}).json()
-        # answers = response['answers']
-        # answers = self.pretty_json(answers)
-
-        return Response(status.HTTP_200_OK)
-
-
-class FillDBView(APIView):
-    """
-    Fills db from json
-    """
-
     def fuzz_me(self, purpose):
         dfs = pd.read_excel(r'main_app/data_main.xlsx')
-        # dfs = dfs.astype({
-        #     '\"ID\"': 'str',
-        #     '\"GUARANTEE_COST\"': 'str',
-        #     '\"DATE_NPA\"': 'str',
-        #     '\"IS_NOT_ACTIVE\"': 'str',
-        #     '\"IS_SOFINANCE\"': 'str',
-        # })
         max = 0
         max_i = 0
         temp_i = 0
@@ -180,12 +173,7 @@ class FillDBView(APIView):
             if max < temp:
                 max = temp
                 max_i = temp_i
-            # print(max, '\t', max_i, '\t', temp, '\t', str(value)[0:20])
             temp_i += 1
-
-        # df = dfs.iloc[max_i].to_dict()
-        # print(dfs.dtypes)
-        # print(df)
 
         data = {
             'ID': str(dfs['\"ID\"'][max_i]),
@@ -229,18 +217,65 @@ class FillDBView(APIView):
 
         return data
 
-    def get(self, request):
-        res = {
-            "probs": {
-                "02004111950168580812": 0.2,
-                "02004121610168733811": 0.1,
-                "02004121616713810242": 0.3,
-                "020060516101626750811": 0.0001,
-                "02006051610166750811": 0.4,
-                "020060516101667350811": 0.001,
-            }
+    def post(self, request):
+        temp_data = {
+            "okved": request.data['okved'],
+            "osn_tass": request.data['osn_tass'],
+            "dop_tass": request.data['dop_tass'],
+            "attrs": request.data['attrs'],
+            "otr": request.data['otr'],
+            "region": request.data['region'],
+            "forma": request.data['forma'],
+            "kbk": request.data['kbk'],
+            "inn": request.data['inn'],
+            "ogrn": request.data['ogrn'],
         }
-        data = [(key, value) for key, value in res['probs'].items()]
+
+        # req_data = {
+        #     "status": 200,
+        #     "data": {
+        #         "inn": "5908002499",
+        #         "ogrn": "1025901607841",
+        #         "okved": [
+        #             "Производство лекарственных препаратов [27408]"
+        #         ],
+        #         "osn_tass": "Производство лекарственных препаратов [27408]",
+        #         "dop_tass": [
+        #             "Перевозка грузов неспециализированными автотранспортными средствами [28152]",
+        #             "Деятельность вспомогательная прочая, связанная с перевозками [28284]",
+        #             "Торговля оптовая фармацевтической продукцией [28508]",
+        #             "Торговля оптовая изделиями, применяемыми в медицинских целях [28510]",
+        #             "Торговля оптовая неспециализированная [28603]",
+        #             "Торговля розничная лекарственными средствами в специализированных магазинах (аптеках) [28724]",
+        #             "Торговля розничная изделиями, применяемыми в медицинских целях, ортопедическими изделиями в специализированных магазинах [28725]",
+        #             "Предоставление прочих финансовых услуг, кроме услуг по страхованию и пенсионному обеспечению, не включенных в другие группировки [28887]",
+        #             "Деятельность в области права [28950]",
+        #             "Консультирование по вопросам коммерческой деятельности и управления [28963]",
+        #             "Деятельность по техническому контролю, испытаниям и анализу прочая [29011]",
+        #             "Научные исследования и разработки в области биотехнологии [29014]",
+        #             "Научные исследования и разработки в области естественных и технических наук прочие [29015]",
+        #             "Научные исследования и разработки в области общественных и гуманитарных наук [29020]",
+        #             "Деятельность рекламных агентств [29025]",
+        #             "Исследование конъюнктуры рынка и изучение общественного мнения [29028]",
+        #             "Деятельность по изучению общественного мнения [29030]",
+        #             "Аренда и лизинг легковых автомобилей и легких автотранспортных средств [29120]",
+        #             "Аренда и лизинг прочих сухопутных транспортных средств и оборудования [29139]",
+        #             "Общая врачебная практика [29233]"
+        #         ],
+        #         "otr": [
+        #             "Фармацевтическая промышленность [266]"
+        #         ],
+        #         "attrs": [
+        #             "С государственной поддержкой [9153213]"
+        #         ],
+        #         "region": "Пермский край [3516]",
+        #         "form": "НЕПУБЛИЧНЫЕ АКЦИОНЕРНЫЕ ОБЩЕСТВА [7026704]"
+        #     }
+        # }
+
+        data = requests.post('http://localhost:5000/predict', timeout=10000, json=temp_data).json()
+
+        data = [(key, value) for key, value in data['probs'].items()]
         data.sort(key=lambda val: val[1], reverse=True)
         data = [(key, value) for key, value in data if value > 0.05]
 
@@ -257,19 +292,11 @@ class FillDBView(APIView):
             df = self.fuzz_me(temp_purpose)
             res_list.append(df)
 
-        # for el in res_list
-
-        # res_json = json.dumps(res_list)
-
-        # with open('main_app/subsidy_all_fields.json', 'r', encoding="utf8") as f:
-        #     data = json.load(f)
-        #
-        # purpose = 'Субсидии российским организациям на финансовое обеспечение части затрат на создание научно-технического задела по разработке базовых технологий производства приоритетных электронных компонентов и радиоэлектронной аппаратуры'
-        # print(self.fuzz_me(purpose))
-        # dfs = pd.read_excel(r'main_app/data_main.xlsx')
-        # print(dfs['\"SMALL_NAME\"'][1897])
-
         return Response({
             'status': status.HTTP_200_OK,
             'data': res_list
         })
+
+    # def post(self, request):
+    #
+    #     return Response(data)

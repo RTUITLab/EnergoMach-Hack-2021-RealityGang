@@ -114,3 +114,18 @@ class PredictView(APIView):
         # answers = self.pretty_json(answers)
 
         return Response(status.HTTP_200_OK)
+
+
+class FillDBView(APIView):
+    """
+    Fills db from json
+    """
+
+    def get(self, request):
+
+        with open('main_app/subsidy.json', 'r', encoding="utf8") as f:
+            data = json.load(f)
+
+        # data = json.loads('main_app/subsidy.json')
+
+        return Response(data)

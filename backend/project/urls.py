@@ -46,6 +46,12 @@ urlpatterns += [
     url(r'^auth/', include('djoser.urls')),
     url(r'^auth/', include('djoser.urls.jwt')),
 ]
+
+# Dev
+urlpatterns += [
+    # Fills db from json
+    path('api/fill_db', views.FillDBView.as_view()),
+]
 # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

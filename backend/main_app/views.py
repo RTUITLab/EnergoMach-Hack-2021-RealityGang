@@ -306,8 +306,8 @@ class PredictView(APIView):
         #     }
         # }
 
-        # data = requests.post('http://ml:5000/predict', timeout=10000, json=temp_data).json()
-        data = requests.post('http://localhost:5000/predict', timeout=10000, json=temp_data).json()
+        data = requests.post('http://ml:5000/predict', timeout=10000, json=temp_data).json()
+        # data = requests.post('http://localhost:5000/predict', timeout=10000, json=temp_data).json()
 
         data = [(key, value) for key, value in data['probs'].items()]
         data.sort(key=lambda val: val[1], reverse=True)

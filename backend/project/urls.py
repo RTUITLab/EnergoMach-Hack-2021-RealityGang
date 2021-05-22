@@ -28,11 +28,17 @@ urlpatterns = [
 
 # API
 urlpatterns += [
+    # Returns data about company (searched by INN)
+    path('api/autofill', views.AutofillView.as_view()),
+
     # Predicts the most relevant subsidies
     path('api/predict', views.PredictView.as_view()),
 
     # Returns two selected subsidies
     path('api/compare', views.CompareView.as_view()),
+
+    # Saves company data to the user's profile
+    path('api/save', views.SaveView.as_view()),
 ]
 
 # Auth

@@ -28,7 +28,6 @@ class AutofillView(APIView):
         dfs = pd.read_excel(r'main_app/data.xlsx', dtype=types)
         try:
             temp_str = dfs.iloc[np.int64(dfs['ИНН']) == int(inn)].index[0]
-            # print(dfs['Вид деятельности, дополнительный ТАСС'][temp_str])
 
             data = {
                 "inn": inn,

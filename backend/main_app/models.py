@@ -16,7 +16,7 @@ class Subsidy(models.Model):
 
 
 class User(AbstractUser):
-    name = models.CharField('Name', max_length=50, default='none')
+    company = models.JSONField('Company', null=True, blank=True)
 
     # messages = models.ForeignKey('Message', on_delete=models.SET_NULL, verbose_name='Заявки',
     #                              related_name='user', null=True, blank=True)
@@ -26,4 +26,4 @@ class User(AbstractUser):
         verbose_name_plural = 'Users'
 
     def __str__(self):
-        return f'({self.id}) {self.name}'
+        return f'({self.id}) {self.username}'

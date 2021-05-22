@@ -47,38 +47,6 @@ class AutofillView(APIView):
         except:
             return Response({'status': status.HTTP_404_NOT_FOUND})
 
-        # wb = load_workbook('data.xlsx')
-        # sheet = wb['сводная информация']
-        # print(sheet[1].value)
-
-        # birthdays = []
-        #
-        # for i in range(35):
-        #     index_name = 'B' + str(i + 2)
-        #     index_birth = 'C' + str(i + 2)
-        #     temp_dict = {
-        #         'name': sheet[index_name].value,
-        #         'birth': sheet[index_birth].value,
-        #     }
-        #     birthdays.append(temp_dict)
-        #
-        # i = 0
-        # print('\nBirthdays in the current month:')
-        # for el in sorted(birthdays, key=lambda x: x['birth'].day, reverse=False):
-        #     i += 1
-        #     if el['birth']:
-        #         if el['birth'].month == CURRENT_MONTH:
-        #             print(el['birth'].day, '\t', el['name'])
-        #
-        # i = 0
-        # print('\nBirthdays in the next month:')
-        # for el in sorted(birthdays, key=lambda x: x['birth'].day, reverse=False):
-        #     i += 1
-        #     if el['birth']:
-        #         if el['birth'].month == NEXT_MONTH:
-        #             print(el['birth'].day, '\t', el['name'])
-        return Response(status.HTTP_200_OK)
-
 
 class SaveView(APIView):
     """
@@ -87,8 +55,19 @@ class SaveView(APIView):
 
     permission_classes = (IsAuthenticated,)
 
+    def get(self, request):
+        user = request.user
+        data = json.loads(user.company)
+
+        return Response({
+            'status': status.HTTP_200_OK,
+            'data': data
+        })
+
     def post(self, request):
-        # user = request.user
+        user = request.user
+        user.company = request.data['company']
+        user.save()
         return Response(status.HTTP_200_OK)
 
 

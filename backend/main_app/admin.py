@@ -13,16 +13,16 @@ AdminSite.site_header = 'EnergoMach-Hack-2021'
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('username', 'name', 'is_active', 'is_staff', 'is_superuser')
+    list_display = ('username', 'is_active', 'is_staff', 'is_superuser')
     fieldsets = (
         ('Авторизация', {'fields': ('username', 'password')}),
-        ('Основная информация', {'fields': ('name',)}),
+        ('Основная информация', {'fields': ('company',)}),
         ('Права доступа', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
         ('Другое', {'fields': ('last_login', 'date_joined')}),
     )
     add_fieldsets = (
         ('Авторизация', {'fields': ('username', 'password1', 'password2',)}),
-        ('Основная информация', {'fields': ('name',)}),
+        ('Основная информация', {'fields': ('company',)}),
         ('Права доступа', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
     )
 

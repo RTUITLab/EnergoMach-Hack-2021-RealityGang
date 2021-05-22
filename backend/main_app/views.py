@@ -15,13 +15,54 @@ import pandas as pd
 import numpy as np
 
 
-class AutofillView(APIView):
+class AutofillOGRNView(APIView):
+    """
+    Returns data about company (searched by OGRN)
+    """
+
+    def post(self, request):
+        ogrn = request.data['ogrn']
+        # if request.data['type']=='inn':
+        #     inn = request.data['inn']
+        # elif request.data['type']=='ogrn':
+        #     ogrn = request.data['ogrn']
+        types = {'h': np.int64,
+                 'i': np.int64,
+                 'j': np.int64}
+        dfs = pd.read_excel(r'main_app/data.xlsx', dtype=types)
+        try:
+            temp_str = dfs.iloc[np.int64(dfs['ОГРН']) == int(ogrn)].index[0]
+
+            data = {
+                "inn": str(int(dfs['ИНН'][temp_str])),
+                "ogrn": ogrn,
+                "okved": dfs['ОКВЭД2'][temp_str].split(' / '),
+                "osn_tass": dfs['Вид деятельности, основной ТАСС'][temp_str],
+                "dop_tass": dfs['Вид деятельности, дополнительный ТАСС'][temp_str].split(' / '),
+                "otr": dfs['Отрасль'][temp_str].split(' / '),
+                "attrs": dfs['Атрибуты предприятия'][temp_str].split(' / '),
+                "region": dfs['Регион'][temp_str],
+                "form": dfs['Организационно правовая форма'][temp_str],
+            }
+            return Response({
+                'status': status.HTTP_200_OK,
+                'data': data
+            })
+        except:
+            return Response({'status': status.HTTP_404_NOT_FOUND})
+
+
+class AutofillINNView(APIView):
     """
     Returns data about company (searched by INN)
     """
 
     def post(self, request):
         inn = request.data['inn']
+        # if request.data['type']=='inn':
+        #     inn = request.data['inn']
+        # elif request.data['type']=='ogrn':
+        #     ogrn = request.data['ogrn']
         types = {'h': np.int64,
                  'i': np.int64,
                  'j': np.int64}
@@ -122,8 +163,7 @@ class FillDBView(APIView):
     """
 
     def get(self, request):
-
-        with open('main_app/subsidy.json', 'r', encoding="utf8") as f:
+        with open('main_app/subsidy_all_fields.json', 'r', encoding="utf8") as f:
             data = json.load(f)
 
         # data = json.loads('main_app/subsidy.json')

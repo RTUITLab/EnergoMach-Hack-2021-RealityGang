@@ -29,7 +29,10 @@ urlpatterns = [
 # API
 urlpatterns += [
     # Returns data about company (searched by INN)
-    path('api/autofill', views.AutofillView.as_view()),
+    path('api/autofill_inn', views.AutofillINNView.as_view()),
+
+    # Returns data about company (searched by OGRN)
+    path('api/autofill_ogrn', views.AutofillOGRNView.as_view()),
 
     # Predicts the most relevant subsidies
     path('api/predict', views.PredictView.as_view()),

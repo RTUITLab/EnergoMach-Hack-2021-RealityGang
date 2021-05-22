@@ -108,7 +108,6 @@ class SaveView(APIView):
             'status': status.HTTP_200_OK,
             'data': data
         })
-        return Response(True)
 
     def post(self, request):
         user = request.user
@@ -133,6 +132,63 @@ class CompareView(APIView):
         #     }
         # })
         return Response(status.HTTP_200_OK)
+
+
+class GetSubsidyView(APIView):
+    """
+    Returns selected subsidy
+    """
+
+    def post(self, request):
+        id = request.data['id']
+        dfs = pd.read_excel(r'main_app/data_main.xlsx')
+        dfs = dfs.loc[dfs['\"ID\"'] == int(id)]
+        print(dfs)
+        max_i = 0
+        data = {
+            'ID': str(dfs['\"ID\"'][max_i]),
+            'URL': str(dfs['\"URL\"'][max_i]),
+            'SMALL_NAME': str(dfs['\"SMALL_NAME\"'][max_i]),
+            'FULL_NAME': str(dfs['\"FULL_NAME\"'][max_i]),
+            'NUMBER_NPA': str(dfs['\"NUMBER_NPA\"'][max_i]),
+            'DATE_NPA': str(dfs['\"DATE_NPA\"'][max_i]),
+            'DESCRIPTION': str(dfs['\"DESCRIPTION\"'][max_i]),
+            'PURPOSE': str(dfs['\"PURPOSE\"'][max_i]),
+            'OBJECTIVE': str(dfs['\"OBJECTIVE\"'][max_i]),
+            'TYPE_MERA': str(dfs['\"TYPE_MERA\"'][max_i]),
+            'TYPE_FORMAT_SUPPORT': str(dfs['\"TYPE_FORMAT_SUPPORT\"'][max_i]),
+            'SROK_VOZVRATA': str(dfs['\"SROK_VOZVRATA\"'][max_i]),
+            'PROCENT_VOZVRATA': str(dfs['\"PROCENT_VOZVRATA\"'][max_i]),
+            'GUARANTE_PERIODE': str(dfs['\"GUARANTE_PERIODE\"'][max_i]),
+            'GUARANTEE_COST': str(dfs['\"GUARANTEE_COST\"'][max_i]),
+            'APPLIANCE_ID': str(dfs['\"APPLIANCE_ID\"'][max_i]),
+            'OKVED2': str(dfs['\"OKVED2\"'][max_i]),
+            'COMPLEXITY': str(dfs['\"COMPLEXITY\"'][max_i]),
+            'AMOUNT_OF_SUPPORT': str(dfs['\"AMOUNT_OF_SUPPORT\"'][max_i]),
+            'REGULARITY_SELECT': str(dfs['\"REGULARITY_SELECT\"'][max_i]),
+            'PERIOD': str(dfs['\"PERIOD\"'][max_i]),
+            'DOGOVOR': str(dfs['\"DOGOVOR\"'][max_i]),
+            'GOS_PROGRAM': str(dfs['\"GOS_PROGRAM\"'][max_i]),
+            'EVENT': str(dfs['\"EVENT\"'][max_i]),
+            'DOP_INFO': str(dfs['\"DOP_INFO\"'][max_i]),
+            'IS_NOT_ACTIVE': str(dfs['\"IS_NOT_ACTIVE\"'][max_i]),
+            'PRICHINA_NOT_ACT': str(dfs['\"PRICHINA_NOT_ACT\"'][max_i]),
+            'REQ_ZAYAVITEL': str(dfs['\"REQ_ZAYAVITEL\"'][max_i]),
+            'REQUEST_PROJECT': str(dfs['\"REQUEST_PROJECT\"'][max_i]),
+            'IS_SOFINANCE': str(dfs['\"IS_SOFINANCE\"'][max_i]),
+            'DOLYA_ISOFINANCE': str(dfs['\"DOLYA_ISOFINANCE\"'][max_i]),
+            'BUDGET_PROJECT': str(dfs['\"BUDGET_PROJECT\"'][max_i]),
+            'POKAZATEL_RESULT': str(dfs['\"POKAZATEL_RESULT\"'][max_i]),
+            'TERRITORIAL_LEVEL': str(dfs['\"TERRITORIAL_LEVEL\"'][max_i]),
+            'REGION_ID': str(dfs['\"REGION_ID\"'][max_i]),
+            'RESPONS_STRUCTURE': str(dfs['\"RESPONS_STRUCTURE\"'][max_i]),
+            'ORG_ID': str(dfs['\"ORG_ID\"'][max_i]),
+        }
+
+        return Response({
+            'status': status.HTTP_200_OK,
+            'data': data
+        })
 
 
 class PredictView(APIView):
@@ -250,6 +306,7 @@ class PredictView(APIView):
         #     }
         # }
 
+        # data = requests.post('http://ml:5000/predict', timeout=10000, json=temp_data).json()
         data = requests.post('http://localhost:5000/predict', timeout=10000, json=temp_data).json()
 
         data = [(key, value) for key, value in data['probs'].items()]

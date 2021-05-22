@@ -38,7 +38,10 @@ urlpatterns += [
     path('api/predict', views.PredictView.as_view()),
 
     # Returns two selected subsidies
-    path('api/compare', views.CompareView.as_view()),
+    # path('api/compare', views.CompareView.as_view()),
+
+    # Returns selected subsidy
+    path('api/get_selected_subsidy', views.GetSubsidyView.as_view()),
 
     # Saves company data to the user's profile
     path('api/save', views.SaveView.as_view()),

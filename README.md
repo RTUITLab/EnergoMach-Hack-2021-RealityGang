@@ -29,7 +29,7 @@ services:
 services:
   frontend:
     environment:
-      - REACT_APP_PRODUCTION_URL=http://YOUR_PRODUCTION_URL:8000/
+      - REACT_APP_PRODUCTION_URL=http://YOUR_PRODUCTION_URL:80/
 ```
 
 4. Launch project
@@ -38,7 +38,7 @@ services:
 docker-compose up --build
 ```
 
-> Done! Project launched on 8000 port!
+> Done! Project launched on 80 port!
 
 <!---
 

@@ -23,10 +23,6 @@ class AutofillOGRNView(APIView):
 
     def post(self, request):
         ogrn = request.data['ogrn']
-        # if request.data['type']=='inn':
-        #     inn = request.data['inn']
-        # elif request.data['type']=='ogrn':
-        #     ogrn = request.data['ogrn']
         types = {'h': np.int64,
                  'i': np.int64,
                  'j': np.int64}
@@ -60,10 +56,6 @@ class AutofillINNView(APIView):
 
     def post(self, request):
         inn = request.data['inn']
-        # if request.data['type']=='inn':
-        #     inn = request.data['inn']
-        # elif request.data['type']=='ogrn':
-        #     ogrn = request.data['ogrn']
         types = {'h': np.int64,
                  'i': np.int64,
                  'j': np.int64}
@@ -99,10 +91,7 @@ class SaveView(APIView):
 
     def get(self, request):
         user = request.user
-        # print('ok')
-        # print(user.company)
         data = json.loads(user.company)
-        # print(type(data))
 
         return Response({
             'status': status.HTTP_200_OK,
@@ -113,24 +102,6 @@ class SaveView(APIView):
         user = request.user
         user.company = request.data['company']
         user.save()
-        return Response(status.HTTP_200_OK)
-
-
-class CompareView(APIView):
-    """
-    Returns two selected subsidies
-    """
-
-    def post(self, request):
-        # subsidy_1 = Subsidy.objects.get(pk=request.data['subsidy_1'])
-        # subsidy_2 = Subsidy.objects.get(pk=request.data['subsidy_2'])
-        # return Response({
-        #     'status': status.HTTP_200_OK,
-        #     'data': {
-        #         'subsidy_1': subsidy_1,
-        #         'subsidy_2': subsidy_2
-        #     }
-        # })
         return Response(status.HTTP_200_OK)
 
 
@@ -265,50 +236,6 @@ class PredictView(APIView):
         }
 
         # temp_data = {
-        #     'status': 200,
-        #     'data': {
-        #         "okved": json.loads(request.data['okved']),
-        #         "osn_tass": request.data['osn_tass'],
-        #         "dop_tass": [
-        #             "Перевозка грузов неспециализированными автотранспортными средствами [28152]",
-        #             "Деятельность вспомогательная прочая, связанная с перевозками [28284]",
-        #             "Торговля оптовая фармацевтической продукцией [28508]",
-        #             "Торговля оптовая изделиями, применяемыми в медицинских целях [28510]",
-        #             "Торговля оптовая неспециализированная [28603]",
-        #             "Торговля розничная лекарственными средствами в специализированных магазинах (аптеках) [28724]",
-        #             "Торговля розничная изделиями, применяемыми в медицинских целях, ортопедическими изделиями в специализированных магазинах [28725]",
-        #             "Предоставление прочих финансовых услуг, кроме услуг по страхованию и пенсионному обеспечению, не включенных в другие группировки [28887]",
-        #             "Деятельность в области права [28950]",
-        #             "Консультирование по вопросам коммерческой деятельности и управления [28963]",
-        #             "Деятельность по техническому контролю, испытаниям и анализу прочая [29011]",
-        #             "Научные исследования и разработки в области биотехнологии [29014]",
-        #             "Научные исследования и разработки в области естественных и технических наук прочие [29015]",
-        #             "Научные исследования и разработки в области общественных и гуманитарных наук [29020]",
-        #             "Деятельность рекламных агентств [29025]",
-        #             "Исследование конъюнктуры рынка и изучение общественного мнения [29028]",
-        #             "Деятельность по изучению общественного мнения [29030]",
-        #             "Аренда и лизинг легковых автомобилей и легких автотранспортных средств [29120]",
-        #             "Аренда и лизинг прочих сухопутных транспортных средств и оборудования [29139]",
-        #             "Общая врачебная практика [29233]"
-        #         ],
-        #         "attrs": [
-        #             "С государственной поддержкой [9153213]"
-        #         ],
-        #         "otr": [
-        #             "Фармацевтическая промышленность [266]"
-        #         ],
-        #         "region": request.data['region'],
-        #         "form": request.data['form'],
-        #         "inn": request.data['inn'],
-        #         "ogrn": request.data['ogrn'],
-        #     }
-        # }
-
-        # print(temp_data)
-
-        # temp_data = request.data['temp_data']
-
-        # temp_data1 = {
         #     "status": 200,
         #     "data": {
         #         "inn": "5908002499",

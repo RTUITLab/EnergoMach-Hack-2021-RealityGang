@@ -37,9 +37,6 @@ urlpatterns += [
     # Predicts the most relevant subsidies
     path('api/predict', views.PredictView.as_view()),
 
-    # Returns two selected subsidies
-    # path('api/compare', views.CompareView.as_view()),
-
     # Returns selected subsidy
     path('api/get_selected_subsidy', views.GetSubsidyView.as_view()),
 

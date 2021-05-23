@@ -8,10 +8,6 @@ AdminSite.site_title = 'EnergoMach-Hack-2021'
 AdminSite.site_header = 'EnergoMach-Hack-2021'
 
 
-# class CustomSubsidyAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'status', 'user', 'description')
-
-
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'is_active', 'is_staff', 'is_superuser')
     fieldsets = (

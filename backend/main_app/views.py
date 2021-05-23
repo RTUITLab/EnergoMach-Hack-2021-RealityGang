@@ -294,8 +294,10 @@ class PredictView(APIView):
         res_list = []
         for el in data:
             temp_kbk = el[0]
+            temp_value = el[1]
             temp_purpose = subsidies[temp_kbk]['purpose']
             df = self.fuzz_me(temp_purpose)
+            df['RELEVANCE'] = str(temp_value)
             res_list.append(df)
 
         return Response({

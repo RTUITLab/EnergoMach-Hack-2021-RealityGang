@@ -7,7 +7,7 @@
 1. Clone project with submodules
 
 ```
-git clone https://github.com/RTUITLab/EnergoMach-Hack-2021-RealityGang em
+git clone https://github.com/RTUITLab/EnergoMach-Hack-2021-RealityX em
 cd em
 git submodule init
 git submodule update
@@ -44,4 +44,4 @@ docker-compose up --build
 
 -->
 
-This project was made by RealityGang - team of RTU IT Lab.
+This project was made by RealityX (RealityGang - old name) - team of RTU IT Lab.
